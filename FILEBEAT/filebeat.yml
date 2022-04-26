@@ -1,0 +1,34 @@
+filebeat.inputs:
+- type: log
+  enabled: true
+  paths:
+    - D:\MOD-Security_LOG\*.log
+#  fields_under_root: true
+  fields:
+    event.module: modsecurity
+    event.dataset: modsecurity.json
+
+filebeat.config.modules:
+  path: ${path.config}/modules.d/*.yml
+  reload.enabled: false
+  
+setup.template.settings:
+  index.number_of_shards: 1
+  
+output.logstash:
+  hosts: ["cloud.remotesyslog.com:5045"]
+#  Enable if CA is enabled
+#  ssl.enabled: true
+#  ssl.certificate_authorities: ["${path.home}/cacert.crt"]
+
+processors:
+  - add_fields:
+       target: organization
+       fields:
+          name: RS-Productie
+  - add_host_metadata: ~
+  - add_cloud_metadata: ~
+
+setup.template.fields: ${path.config}/fields.yml
+setup.template.json.enabled: false
+setup.template.overwrite: true
