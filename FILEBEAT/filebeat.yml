@@ -3,6 +3,11 @@ filebeat.inputs:
   enabled: true
   paths:
     - D:\MOD-Security_LOG\*.log
+#    input_type: log
+#    close_removed : false
+#    clean_removed : false                 
+#    ignore_older: 47h
+#    clean_inactive: 48h
 #  fields_under_root: true
   fields:
     event.module: modsecurity
@@ -15,11 +20,17 @@ filebeat.config.modules:
 setup.template.settings:
   index.number_of_shards: 1
   
+#setup.kibana:
+#output.logstash:
+#   The Logstash hosts
+#  hosts: ["cloud.remotesyslog.com:22222"]
+#output.elasticsearch:
+#  hosts: ["cloud.remotesyslog.com:9200"]
+
 output.logstash:
   hosts: ["cloud.remotesyslog.com:5045"]
-#  Enable if CA is enabled
 #  ssl.enabled: true
-#  ssl.certificate_authorities: ["${path.home}/cacert.crt"]
+#  ssl.certificate_authorities: ["${path.config}/cacert.crt"]
 
 processors:
   - add_fields:
